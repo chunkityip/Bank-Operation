@@ -21,19 +21,19 @@ public class AccountServices {
     Scanner newScan = new Scanner(System.in);
     public Logger project0 = LogManager.getLogger("project0");
 
-    // this method request MyAppDAO to create the account with the balance if fails return false
-    // Success will return true
-    // takes the user object as the input
-
+    /*
+    accountApplication() method request UserDAO to create the account with the balance if :
+    1. if create successful , it will return true
+    2. if create fails , it will return false
+    It takes the user object as the input
+     */
     public Boolean accountApplication(Users one) throws InputMismatchException, NumberFormatException {
         double balance = -1;
         if(customerAccountDAO.isAccountUnique(one.getUserId())) {
             account.setUserId(one.getUserId());
             do {
-
                 System.out.println("Please enter initial account balance : ");
                 try {
-
                     balance = Double.parseDouble(newScan.nextLine());
                     account.setAccountBalance(balance);
                 }
@@ -48,8 +48,10 @@ public class AccountServices {
         return false;
     }
 
-    // this takes all the input form the users and creates the instance of MyTransfer and checks the user input
-    // takes the user instance as argument.
+    /*
+    createTransfer() method takes all the input form the users and creates the instance of Transfer class
+    It checks the user input and takes the user instance as argument.
+     */
     public Transfer createTransfer(Users one) {
         int reciveAccount = 0;
         double amount = 0;
@@ -79,8 +81,10 @@ public class AccountServices {
         project0.info("User " + one.getUserId() +" Created Transfer request of $"+ transfer.getAmount());
         return transfer ;
     }
-
-    // return false if transfer unsuccessful  to insert in the database else true
+    /* transferNow() method will:
+    1. return true if transfer to insert in the database successfully
+    2. return false if transfer  to insert in the database unsuccessful.
+     */
     public Boolean transferNow(Transfer transfer) {
         Boolean done = false;
         if(customerAccountDAO.transfer(transfer)) {
@@ -89,14 +93,13 @@ public class AccountServices {
         return done;
     }
 
-    // get the account balance of particulate userid
+    // getAccountBalance() method get the account balance of particulate userid
     public double getAccountBalance(int userid) {
         return customerAccountDAO.getBalance(userid);
     }
 
-    // this will update the user account ballence.
-
-    public Boolean updateBallenceTransfer(int userid, double updateBy) {
+    // updateBalanceTransfer() method will update the user account balance.
+    public Boolean updateBalanceTransfer(int userid, double updateBy) {
         Boolean neg = false;
         double update = getAccountBalance(userid) - updateBy;
         if(update >= 0 ) {
@@ -105,8 +108,8 @@ public class AccountServices {
         }
         return neg;
     }
-    // this will update the accepted transaction
-    public Boolean updateBAllenceTransferAccept(int userid, double updateBy) {
+    // updateAllBalanceTransferAccept() method will update the accepted transaction
+    public Boolean updateAllBalanceTransferAccept(int userid, double updateBy) {
         Boolean neg = false;
         double update = getAccountBalance(userid) + updateBy;
         if(update >= 0 ) {
@@ -115,8 +118,8 @@ public class AccountServices {
         }
         return neg;
     }
-    // Display all the upapprove transection for the user
-    private int pandingTransection(int accountid) {
+    // pandingTransaction() method is to display all the un-approve transaction for the user
+    private int pandingTransaction(int accountid) {
         transfers = customerAccountDAO.getPendingTransfer(accountid);
         String str1 = String.format("%20s%20s%20s", "Transfer ID", "From Account Id", "Amount" );
         System.out.println(str1);
@@ -130,6 +133,7 @@ public class AccountServices {
         return transfers.size();
     }
 
+    //isTransferExists() is to check transferID
     private Transfer isTransferExists(List<Transfer> transfers, int transferID ) {
         for(int i =0; i< transfers.size(); i++) {
             if(transfers.get(i).getTransactionId() == transferID) {
@@ -140,11 +144,11 @@ public class AccountServices {
     }
 
 
-    // this method approve and reject the incoming transfer for the particulate user
-    public int approveTransection(int toUserId) throws InputMismatchException, NumberFormatException {
+    // approveTransaction() method is to approve and reject the incoming transfer for the particulate user
+    public int approveTransaction(int toUserId) throws InputMismatchException, NumberFormatException {
         Boolean transfersuccess = false ;
         int accountid = customerAccountDAO.findAccountId(toUserId);
-        int ans = pandingTransection(accountid);
+        int ans = pandingTransaction(accountid);
         while(ans != 0) {
             System.out.println("Please Enter the Transfer ID to Approve / reject or 0 to exit ");
             ans = Integer.parseInt(newScan.nextLine()) ;
@@ -153,43 +157,45 @@ public class AccountServices {
                 System.out.println("please enter 1 for Approve 2 for reject");
                 int apprej = newScan.nextInt();
                 if(apprej> 0 & apprej <3) {
-                    // make sure bool account table and transection table is updated
+                    // update the  account table and transaction table
                     if(apprej == 1) {
-                        //int toUserid = accountDAO.getUserIdByAccountId(accountid);
-                        transfersuccess = updateBAllenceTransferAccept(toUserId, transfer.getAmount()  );
+                        transfersuccess = updateAllBalanceTransferAccept(toUserId, transfer.getAmount()  );
                         project0.info("User " + toUserId +" Accepted the Transfer $"+ transfer.getAmount());
                     }
                     if(apprej == 2) {
                         int formUserid = customerAccountDAO.getUserIdByAccountId(transfer.getFromAccountId());
                         if(formUserid != -1) {
                             project0.info("User " + toUserId +" Rejected the Transfer $"+ transfer.getAmount());
-                            transfersuccess = updateBAllenceTransferAccept(formUserid, transfer.getAmount());
+                            transfersuccess = updateAllBalanceTransferAccept(formUserid, transfer.getAmount());
                             project0.info("User " + formUserid +" Account has been Credited $"+ transfer.getAmount());
                         }
                     }
                 }
                 if(transfersuccess) {
-                    Boolean upddated = customerAccountDAO.updateTransferTable(transfer, apprej);
+                    Boolean updated = customerAccountDAO.updateTransferTable(transfer, apprej);
                 }
-                ans = pandingTransection(accountid);
+                ans = pandingTransaction(accountid);
             }
         }
         if(ans == 0 ) {
-            System.out.println("There are no transection avilable to approve");
+            System.out.println("There are no transaction available to approve");
         }
         return ans;
     }
 
+    //no longer is required to project 0 , just keep it there
+
+    //depositOrWidrow() method is to deposit and withdraw function
     public Boolean depositOrWidrow(int userid) throws InputMismatchException, NumberFormatException {
         Boolean success = false;
         System.out.println("Please Enter Amount to widow or deposit");
         double amount = Double.parseDouble(newScan.nextLine());
         if(amount > 0) {
-            success =	updateBAllenceTransferAccept(userid, amount);
+            success = updateAllBalanceTransferAccept(userid, amount);
             project0.info("User " + userid +" Deposited $"+amount);
         }
         else if(amount < 0) {
-            success = updateBAllenceTransferAccept(userid, amount);
+            success = updateAllBalanceTransferAccept(userid, amount);
             project0.info("User " + userid +" Widraw $"+amount);
         }
         return success;

@@ -7,7 +7,6 @@ public class Menu {
         return "-----------------------Welcome to CBANK-----------------------"+ "\n" +
                 "1. Login"+ "\n" +
                 //"2. Create Account" + "\n" +//
-                //"\"Please select the following service base on the number 1 to 2: \" : ";
                 "\"Please select number 1 to enter login page: \" : ";
     }
 

@@ -9,7 +9,7 @@ public class ManageMenu {
     static Menu myMenu = new Menu();
     static Scanner myScanner = new Scanner(System.in);
 
-    // this method validate the user input and display the login option.
+    //displayMainPage() method validate the user input and display the login option.
     public static int displayMainPage()   {
         int userInput = 0;
         Boolean swi = true;
@@ -29,8 +29,6 @@ public class ManageMenu {
     }
 
     public static int menuManager(Users one) {
-
-
         //0 mean waiting for pending , 1 mean is Customer , 2 mean is Employee
         if(one.getlevel() == 0) {
             return displayUserMenu(one);
@@ -47,6 +45,7 @@ public class ManageMenu {
         return 1;
     }
 
+    //displayUserMenu() method is to display User login page
     public static int displayUserMenu(Users one) {
         int userInput =0 ;
         Boolean swi = true;
@@ -65,6 +64,8 @@ public class ManageMenu {
         }
         return userInput;
     }
+
+    //displayCustomerMenu() method is to display Customer login page
     public static int displayCustomerMenu(Users one) {
         int userInput = 0;
         Boolean swi = true;
@@ -87,6 +88,7 @@ public class ManageMenu {
         return userInput;
     }
 
+    //displayEmployeeMenu() method is to display Employee login page
     public static int displayEmployeeMenu(Users one) {
         int userInput = 0;
         Boolean swi = true;

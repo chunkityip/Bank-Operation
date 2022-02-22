@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>models</OriginalElement>
+  <nodes>
+    <node x="0.0" y="225.0">models.Account</node>
+    <node x="247.0" y="225.0">models.Transfer</node>
+    <node x="0.0" y="126.0">models.Employees</node>
+    <node x="24.5" y="0.0">models.Users</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="models.Employees" target="models.Users" relationship="GENERALIZATION">
+      <point x="0.0" y="-27.0" />
+      <point x="0.0" y="38.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="176.0" y="161.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -90,7 +90,8 @@ public class EmployeeDAO {
     // getAllTransfer() method show all the transfer to employee
     public List<Transfer> getAllTransfer(){
         List<Transfer> transfer = new ArrayList<Transfer>();
-        String sql ="Select transaction_id, from_account_acid, to_account_acid, amount, approval from transfer ";
+        //TransactionId , FromAccountId , ToAccountId , Amount , Approval
+        String sql = "Select * from transfer ";
         try {
             pst = conn.prepareStatement(sql);
             ResultSet rst = pst.executeQuery();

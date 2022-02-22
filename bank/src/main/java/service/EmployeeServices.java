@@ -21,16 +21,20 @@ public class EmployeeServices {
     Users user = new Users();
     Scanner newScan = new Scanner(System.in);
 
-    private void pandingAccount() {
+
+    //pendingAccount() method is to list the pending accounts info
+    private void pendingAccount() {
         accounts =	empDAO.getPendingAccount();
         String str1 = String.format("%20s%20s%20s", "User ID", "Account ID", "Balance"  );
         System.out.println(str1);
+        System.out.println("================================================================================================================================================");
         for(int i = 0; i< accounts.size(); i++) {
-            String str2 = String.format("%20d%20d%20.2f", accounts.get(i).getUserId(),accounts.get(i).getAccountId(),accounts.get(i).getAccountBalance() );
+            String str2 = String.format("%20d%20d%20.2f", accounts.get(i).getUserId(), accounts.get(i).getAccountId(), accounts.get(i).getAccountBalance() );
             System.out.println(str2);
         }
     }
 
+    //getAllAccount() method is to list all the accounts info
     public void getAllAccount() {
         accounts =	empDAO.getAllApprove();
         String str1 = String.format("%20s%20s%20s%20s%20s", "User ID", "First Name", "Last Name", "Account ID", "Balance"  );
@@ -38,15 +42,26 @@ public class EmployeeServices {
         System.out.println("================================================================================================================================================");
         for(int i = 0; i< accounts.size(); i++) {
             user = appDAO.getUsers(accounts.get(i).getUserId());
-            String str2 = String.format("%20d%20s%20s%20d%20.2f", accounts.get(i).getUserId(),user.getFirstName(),user.getLastName(),accounts.get(i).getAccountId(),accounts.get(i).getAccountBalance());
+            String str2 = String.format("%20d%20s%20s%20d%20.2f", accounts.get(i).getUserId(), user.getFirstName(), user.getLastName(), accounts.get(i).getAccountId(), accounts.get(i).getAccountBalance());
             System.out.println(str2);
         }
     }
 
-    // chekes if the account request is exists
-    // it will return 0 if request dose not exists
-    // it will retrun the int array with index 0 being account ID and index 1 with userid
-
+    public void getAlllog() {
+        transfers = empDAO.getAllTransfer();
+        String str1 = String.format("%20s%20s%20s", "First Name", "Last Name" , "Amount" ,"Approved by Recipient(1)");
+        System.out.println("================================================================================================================================================");
+        System.out.println(str1);
+        for (int i = 0; i < transfers.size(); i++) {
+            String str2 = String.format("%20d%20d%20.2f", user.getFirstName(), user.getLastName(), transfers.get(i).getAmount());
+            System.out.println(str2);
+        }
+    }
+    /*
+    isRequestExists() method is to check if the account request is exists.
+    it will return 0 if request dose not exists
+    it will return the int array with index 0 being account ID and index 1 with userid
+     */
     public int[] isRequestExists(List<Account> one, int accountID ) {
 
         int[] userinfo = new int[2];
@@ -59,12 +74,12 @@ public class EmployeeServices {
         return userinfo;
     }
 
-    // this will ask for user input to approve the account
+    // approveAccount() method will ask for user input to approve the account
     public int approveAccount() throws InputMismatchException, NumberFormatException {
         int[] userinfo = new int[2];
         int ans;
         do {
-            pandingAccount();
+            pendingAccount();
             System.out.println("Please Enter the AccountID to Approve / reject or 0 to exit ");
             ans = Integer.parseInt(newScan.nextLine());
             userinfo = isRequestExists(accounts, ans);

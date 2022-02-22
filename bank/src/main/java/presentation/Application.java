@@ -16,10 +16,7 @@ public class Application {
     public static Logger project0 = LogManager.getLogger("chunkit_project0");
 
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
         int userinput, userinputat2 = 0 ;
-
         Users one = new Users();
         UserServices appServices = new UserServices();
         AccountServices accountServices = new AccountServices();
@@ -33,7 +30,7 @@ public class Application {
                     one = appServices.logInService();
                     userinputat2 = ManageMenu.menuManager(one);
                     project0.info("User " +one.getUserId() +" is Login");
-                    //this block meaning the user is waiting for approval
+                    //It's used for the user is waiting for approval which level is 0
                     do {
                         if(one.getlevel()==0) {
                             switch(userinputat2) {
@@ -58,7 +55,7 @@ public class Application {
                                     break;
                             }
                         }
-                        //This block will execute if the user is account holder which level is 1
+                        //It will execute if the user is account holder which level is 1
                         else if(one.getlevel() ==1) {
                             switch(userinputat2) {
                                 case 1:
@@ -75,7 +72,7 @@ public class Application {
                                     Boolean done = true;
                                     do {
                                         transfer = accountServices.createTransfer(one);
-                                        if(accountServices.updateBallenceTransfer(one.getUserId(), transfer.getAmount())) {
+                                        if(accountServices.updateBalanceTransfer(one.getUserId(), transfer.getAmount())) {
                                             done = accountServices.transferNow(transfer);
                                         }
                                         else {
@@ -88,12 +85,11 @@ public class Application {
                                 case 4:
                                     int responce = -1;
                                     try {
-                                        responce = accountServices.approveTransection(one.getUserId());
+                                        responce = accountServices.approveTransaction(one.getUserId());
                                     }
                                     catch (InputMismatchException | NumberFormatException e) {
-                                        // TODO: handle exception
                                         System.out.println("Please Enter a valid serves");
-                                        userinputat2=4;
+                                        userinputat2 = 4;
                                     }
                                     if(responce == 0) {
                                         userinputat2 = ManageMenu.menuManager(one);
@@ -112,24 +108,19 @@ public class Application {
                                         }
                                     }
                                     catch (InputMismatchException | NumberFormatException e) {
-                                        // TODO: handle exception
                                         System.out.println("Please Enter Valid Amount :");
                                     }
-                                    //userinputat2 = MyMenuManager.menuManager(one);
                                     break;
                             }
                         }
-
-                        //this block will execute if the user is Employee which level is 2
+                        //It will execute if the user is Employee which level is 2
                         else if(one.getlevel() == 2) {
-
                             switch(userinputat2) {
                                 case 1:
                                     project0.info("User " + one.getUserId() +" is Logout");
                                     sw = false;
                                     break;
                                 case 2:
-
                                     int out = -1;
                                     do {
                                         try {
@@ -147,23 +138,21 @@ public class Application {
                                     employeeServices.getAllAccount();
                                     userinputat2 = ManageMenu.menuManager(one);
                                     break;
-                                    /*
                                 case 4:
-                                    //employeeServices.getAllTrenasfer();
-                                    employeeServices.getAllLog();
-                                    userinputat2 = MyMenuManager.menuManager(one);
+                                    //employeeServices.getAllTransfer();
+                                    employeeServices.getAlllog();
+                                    userinputat2 = ManageMenu.menuManager(one);
                                     break;
-                                      */
                                 case 5:
                                     Boolean isUserCreated = appServices.creatUserService();
                                     if(isUserCreated) {
                                         System.out.println("Successfully creating a new account");
+                                        userinputat2 = ManageMenu.menuManager(one);
                                     }
-                                    userinputat2 = ManageMenu.menuManager(one);
                                     break;
                             }
                         }
-                        //this is default block
+                        // efault block
                         else {
                             System.out.println("ERROR!");
                         }
